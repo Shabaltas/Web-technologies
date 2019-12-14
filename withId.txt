@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SpecializationsRepository>
+    <nextId>7</nextId>
+    <specialization title="rgu" id="6"/>
+    <specialization title="lll" id="2"/>
+    <specialization title="rrr" id="5"/>
+    <specialization title="lll" id="1"/>
+    <specialization title="aaa" id="3"/>
+    <specialization title="rrr" id="4"/>
+</SpecializationsRepository>
