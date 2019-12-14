@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema  xmlns="http://www.w3.org/2001/XMLSchema"
+		 targetNamespace="http://www.example.com/Banks"
+		 xmlns:tns="http://www.example.com/Banks"
+		 elementFormDefault="qualified">
+	<element name="deposit" type="tns:Deposit" abstract="true"/>
+	<element name="depositForNaturalPerson" type="tns:DepositForNaturalPerson" substitutionGroup="tns:deposit"/>
+	<element name="depositForJuridicalPerson" type="tns:DepositForJuridicalPerson" substitutionGroup="tns:deposit"/>
+	<element name="Banks">
+		<complexType>
+			<sequence>
+				<element ref="tns:deposit"  minOccurs="16" maxOccurs="unbounded"/>
+			</sequence>
+		</complexType>
+	</element>
+	<complexType name="Deposit">
+		<sequence>
+			<element name="bankName" type="string"/>
+			<element name="country" type="string" default="Belarus"/>
+			<element name="profitability" type="float"/>
+			<element name="dateOfDeposit" type="date"/>
+			<element name="duration" default="P1Y">
+				<simpleType>
+					<restriction base="duration">
+						<pattern value="P(\d+Y)?(\d+M)?(\d+D)?(T0H0M0S)?"/>
+					</restriction>
+				</simpleType>
+			</element>
+		</sequence>
+		<attribute name="depositType" use="required">
+			<simpleType>
+				<restriction base="string">
+					<enumeration value="poste restante"/>
+					<enumeration value="urgent"/>
+					<enumeration value="settlement"/>
+					<enumeration value="accumulative"/>
+					<enumeration value="saving"/>
+					<enumeration value="metallic"/>
+				</restriction>
+			</simpleType>
+		</attribute>
+		<attribute name="accountID" type="ID" use="required"/>
+	</complexType>
+	<complexType name="DepositForNaturalPerson">
+		<complexContent>
+			<extension base="tns:Deposit">
+				<sequence>
+					<element name="depositor" type="tns:SNP"/>
+					<element name="amount">
+						<simpleType>
+							<restriction base="decimal">
+								<minInclusive value="100"/>
+							</restriction>
+						</simpleType>
+					</element>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<complexType name="DepositForJuridicalPerson">
+		<complexContent>
+			<extension base="tns:Deposit">
+				<sequence>
+					<element name="contactPerson" type="tns:SNP"/>
+					<element name="amount">
+						<simpleType>
+							<restriction base="decimal">
+								<minInclusive value="10000"/>
+							</restriction>
+						</simpleType>
+					</element>
+					<element name="companyName" type="string"/>
+					<element name="companyLocation" type="string"/>
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<complexType name="SNP">
+		<sequence>
+			<element name="surname" type="string" />
+			<element name="name" type="string"/>
+			<element name="patronymic" type="string"/>
+		</sequence>
+	</complexType>
+</schema>
+
